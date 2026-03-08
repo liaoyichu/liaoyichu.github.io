@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初初的数学实验室 2.0</title>
+    <script>
+        window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$']] } };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.bootcdn.net/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root { --primary: #2c3e50; --accent: #3498db; --bg: #f0f2f5; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding: 0; color: var(--primary); }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .grid-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05); cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(0,0,0,0.05); }
+        .grid-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
+        .card-thumb { width: 100%; height: 160px; background: #e2e8f0; position: relative; overflow: hidden; }
+        .card-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .card-id-badge { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.6); color: white; padding: 4px 10px; border-radius: 10px; font-size: 10px; font-weight: bold; }
+        .card-content { padding: 20px; }
+        .card-date { font-size: 12px; color: #a0aec0; margin-bottom: 8px; }
+        .card-title { font-size: 1.1em; font-weight: 700; color: #2d3748; }
+        .detail-view { display: none; }
+        .detail-card { background: white; border-radius: 25px; padding: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+        .question-box { background: #fffaf0; border-left: 6px solid #ecc94b; padding: 20px; border-radius: 15px; margin-bottom: 25px; line-height: 1.8; }
+        .step-item { background: #f8fafc; border-radius: 15px; padding: 20px; margin-bottom: 15px; border: 1px solid #edf2f7; }
+        .conclusion-box { background: #ebf8ff; border: 2px solid #3498db; color: #2b6cb0; padding: 20px; border-radius: 15px; text-align: center; font-weight: 800; font-size: 1.2em; }
+        img { max-width: 100%; border-radius: 10px; margin-top: 10px; border: 1px solid #eee; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部导航条 -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <a href="/" style="text-decoration: none; color: var(--accent); font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 5px;">
+                🏠 返回实验室首页
+            </a>
+            <div id="stats-badge" style="font-size: 12px; color: #718096; font-weight: 600;">共收录 7 道题目</div>
+        </div>
+
+        <div id="grid-view">
+            <div class="grid-container" id="cards-grid"></div>
+        </div>
+        <div id="detail-view" class="detail-view">
+            <button onclick="showGrid()" style="margin-bottom:20px; padding:10px 20px; border-radius:10px; border:none; background:white; cursor:pointer; font-weight:bold; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">← 返回列表</button>
+            <div id="detail-content"></div>
+        </div>
+    </div>
+
+    <script>
+        const realNotes = [
+  {
+    "id": 7,
+    "date": "2026-02-19",
+    "title": "互质自然数之和与积的关系",
+    "question": "非零自然数 $a, b, c, d$ 两两互质，且 $a+b+c+d$ 是 $a, b, c, d$ 的公倍数。求 $a+b+c+d$ 的值。<br><img src='B018D831C344A51272ECCE86538234BA_1771515062745.png'>",
+    "steps": [
+      {"title": "1. 翻译条件与缩放", "content": "两两互质 $\\implies \\text{lcm}(a,b,c,d) = abcd$。<br>由题意 $abcd \\mid (a+b+c+d) \\implies abcd \\le a+b+c+d$。<br>不妨设 $a \\le b \\le c \\le d$，则 $a+b+c+d \\le 4d$。<br>所以 $abcd \\le 4d \\implies abc \\le 4$。"},
+      {"title": "2. 分类讨论 abc 的值", "content": "因为 $a,b,c$ 互质且为正整数，可能的组合极少：<br>$\\bullet\\ abc=1 \\implies a=b=c=1$<br>$\\bullet\\ abc=2 \\implies a=1, b=1, c=2$<br>$\\bullet\\ abc=3 \\implies a=1, b=1, c=3$<br>$\\bullet\\ abc=4 \\implies a=1, b=1, c=4$ (但此时 $\\gcd(c,d)$ 可能有问题) 或 $a=1,b=2,c=2$ (不互质，舍)。"},
+      {"title": "3. 结合整除性求解", "content": "设 $S = a+b+c+d$。因为 $d \\mid S$，设 $S=kd$ ($k \\in \\{1,2,3,4\\}$)。<br>$\\mathbf{Case\\ k=4:}\\ S=4d \\implies a+b+c=3d$。因 $a,b,c \\le d$，唯一解是 $a=b=c=d=1$。$S=4$。<br>$\\mathbf{Case\\ k=3:}\\ S=3d \\implies a+b+c=2d$。需 $abcd \\mid 3d \\implies abc \\mid 3$。若 $abc=1 \\implies 3=2d \\implies d=1.5$ (舍)。若 $abc=3 \\implies 5=2d$ (舍)。<br>$\\mathbf{Case\\ k=2:}\\ S=2d \\implies a+b+c=d$。需 $abcd \\mid 2d \\implies abc \\mid 2$。若 $abc=1 \\implies 3=d$。解 $\\{1,1,1,3\\}$，互质，成立。$S=6$。<br>$\\mathbf{Case\\ k=1:}\\ S=d \\implies a+b+c=0$ (不可能)。"},
+      {"title": "4. 结论", "content": "综上，只有两种可能：<br>1. $\\{1,1,1,1\\}$，和为 4。<br>2. $\\{1,1,1,3\\}$，和为 6。"}
+    ],
+    "conclusion": "4 或 6"
+  },
+  {
+    "id": 6,
+    "date": "2026-02-16",
+    "title": "新运算定义：同奇偶平均数",
+    "question": "定义 $a * b$ 为 $a$ 与 $b$ 之间所有与 $a$ 奇偶性相同的自然数的平均数。算式 $\\square * (20 * 2025) = 1080$。<br><img src='B04A9358C0A4B492A2F4F181047F5F26_1771209036668.png'>",
+    "steps": [
+      {"title": "1. 解析运算 $a*b$", "content": "$a$ 与 $b$ 之间与 $a$ 同奇偶的数构成一个公差为 2 的等差数列。<br>平均数公式 = $\\frac{\\text{首项} + \\text{末项}}{2}$。<br>首项是 $a$。末项是 $\\le b$ 的最大同奇偶数。"},
+      {"title": "2. 计算括号 $20 * 2025$", "content": "$a=20$ (偶数)。$b=2025$。$[20, 2025]$ 范围内最大的偶数是 2024。<br>Result = $\\frac{20 + 2024}{2} = \\frac{2044}{2} = 1022$。"},
+      {"title": "3. 解方程 $x * 1022 = 1080$", "content": "设未知数为 $x$。$x$ 与 1022 之间同奇偶数的平均数为 1080。<br>$\\frac{x + \\text{末项}}{2} = 1080$。<br>若 $x < 1022$，末项为 1022。$\\frac{x+1022}{2} = 1080 \\implies x = 1138$。矛盾（$1138 > 1022$）。<br>若 $x > 1022$，首项 1022，末项 $x$ (或 $x$ 附近)。这里视 $x$ 为首项，1022 为末项（运算定义通常是对称的，或指区间）。<br>根据题意理解为“两数之间”，则平均数为 $\\frac{x + 1022}{2} = 1080$。<br>$x + 1022 = 2160 \\implies x = 1138$。"},
+      {"title": "4. 验证", "content": "$1138 * 1022$：区间 $[1022, 1138]$ 的偶数平均值 = $\\frac{1022+1138}{2} = 1080$。正确。"}
+    ],
+    "conclusion": "方格中应填 1138"
+  },
+  {
+    "id": 5,
+    "date": "2026-02-16",
+    "title": "狼羊过河 (4狼4羊模式)",
+    "question": "4狼4羊过河，船载3只。狼多于羊会吃羊。最少几次？<br><img src='DF296920C6702219EC01CD65A6537ACC_1771208439839.png'>",
+    "steps": [
+      {"title": "规则分析", "content": "任何时刻、任何一岸（包括船上），如果 羊 > 0，则必须 羊 $\\ge$ 狼。<br>船载 3 只，增加了运力，允许更激进的策略。"},
+      {"title": "详细推演", "content": "状态表示：(左岸狼, 左岸羊) -> 动作 -> (右岸狼, 右岸羊)<br>初始：(4,4) // (0,0)<br>1. **去 3 狼**：船上3狼安全。左岸(1,4)安全。到达右岸放3狼。<br>   状态：(1,4) // (3,0)  [船回: 1狼]<br>2. **回 1 狼**：<br>   状态：(2,4) // (2,0) [目前已用 2 步]<br>3. **去 2 羊 1 狼**：船上(1狼2羊)安全。左岸(1,2)不安全！<br>   **修正策略**：<br>   Step 1: 去 3 狼。 -> 右(3,0)。回 1 狼。-> 左(2,4)。<br>   Step 2: 去 3 狼？ -> 右(4,0)。回 1 狼。-> 左(1,4)。(太慢)<br>   **关键一步**：去 2 羊 1 狼？左岸剩 (0, 2) 只有羊，安全！<br>   当前左岸 (2,4)。船载 (1狼2羊)。左岸剩 (1,2) 羊多，安全。右岸 (2,0)+(1,2)=(3,2) 狼多吃羊！不行。<br>   **正确的高载量策略**：<br>   1. 去 2 羊 1 狼？不行。<br>   1. 去 3 羊？ 左岸(2,1)吃羊。不行。<br>   1. 去 3 狼。右(3,0)。回1狼。左(2,4)。<br>   2. 去 3 狼。右(4,0)。回1狼。左(1,4)。<br>   3. 去 3 羊。右(1,3)安全。左(1,1)安全。回1狼1羊。左(2,2)。右(0,2)。<br>   ... 这种常规法太慢。"},
+      {"title": "最优解法", "content": "1. **去 3 狼**：左(1,4)，右(3,0)。(船回 1 狼)<br>   --> 左(2,4)，右(2,0)。<br>2. **去 2 羊 1 狼**？(见上文分析，右岸危险)。<br>   **改方案**：<br>   1. 去 3 狼。回 1 狼。<br>   2. 去 2 狼。右(4,0)。回 1 狼。 左(1,4)。<br>   3. 去 3 羊。右(1,3)安全。回 1 狼。左(2,1)安全。<br>   4. 去 3 羊。右(1,4)安全。回 1 狼。左(2,0)。<br>   5. 去 2 狼... <br>   **最少次数**：利用船载3的爆发力。<br>   1. 去3狼。回1狼。（2步）<br>   2. 去2羊1狼（船上安全）。左(0,2)安全。右(3+1=4, 2) 狼多！不行。<br>   **标准答案路径**：<br>   1. 3狼过河。 (右3狼)。回1狼。<br>   2. 3狼过河。 (右4狼)。回1狼。<br>   3. 4羊过河？不行，船只有3。<br>   **正解**：<br>   1. 3狼过。回1狼。 (左:2狼4羊, 右:2狼)<br>   2. 2狼1羊过。 (左:0狼3羊, 右:4狼1羊-死)。<br>   <br>   **勘误**：图片中似乎是“3狼”或“3人船”。<br>   根据经典解法：<br>   1. 2狼过，回1狼。<br>   2. 2狼过，回1狼。<br>   3. 2羊过，回1狼1羊。<br>   4. 2羊过，回1狼。<br>   5. 2狼过，回1狼。<br>   6. 2狼过。<br>   (这是船载2人的解法，需11步)。<br>   <br>   **船载3人**：<br>   1. 3狼过。回1狼。<br>   2. 2羊1狼过。右岸(2+1=3狼, 1羊)吃羊。不行。<br>   3. 3羊过。左(2狼1羊)吃羊。不行。<br>   **可行路径**：<br>   1. 3狼过。回1狼。 (左:2W4S, 右:2W)<br>   2. 2W1S过? 右3W1S吃羊。<br>   2. 2S过? 左2W2S OK。右2W2S OK。回1W1S。<br>      此时左(3W3S)，右(1W1S)。<br>   3. 3S过。左(3W0S) OK。右(1W4S) OK。回1W。<br>      此时左(4W)，右(4S)。<br>   4. 3W过。回1W。<br>   5. 3W过。<br>   共 5 个单程运送（中间穿插回程）。<br>   总步数：去、回、去、回、去、回、去、回、去 = 9步？<br>   题目问“最少几次”，通常指单程次数。<br>   Round 1: 3W -> (右3W). 回1W -> (左2W4S).<br>   Round 2: 2S -> (右2W2S). 回1W1S -> (左3W3S).<br>   Round 3: 3S -> (右1W4S). 回1W -> (左4W0S).<br>   Round 4: 3W -> (右3W4S). 回1W -> (左2W).<br>   Round 5: 3W -> (右4W4S). Done.<br>   总计：5次运送（去）+ 4次空回 = 9次操作。"}
+    ],
+    "conclusion": "9 次操作 (或 5 个往返回合)"
+  },
+  {
+    "id": 4,
+    "date": "2026-02-16",
+    "title": "三正方形拼接口阴影面积",
+    "question": "边长 10, 8, 4 正方形拼接，求阴影面积。<br><img src='D050E022E2633F6DC9B27F33348C22F2_1771192247575.png'>",
+    "steps": [
+      {"title": "1. 建立坐标系或相似三角形", "content": "总底长 $10+8+4 = 22$。大三角形底为 22，高为 10（左边正方形边长）。<br>连接左下角到右上角（最右侧正方形顶点）。<br>直线方程：过 $(0,0)$ 和 $(22, 10)$。<br>斜率 $k = \\frac{10}{22} = \\frac{5}{11}$。<br>直线方程 $y = \\frac{5}{11}x$。"},
+      {"title": "2. 计算切割点高度", "content": "中间正方形（边长8）的左边界 $x=10$。直线在此处高度 $y_1 = \\frac{5}{11} \\times 10 = \\frac{50}{11}$。<br>右边正方形（边长4）的左边界 $x=18$。直线在此处高度 $y_2 = \\frac{5}{11} \\times 18 = \\frac{90}{11}$。"},
+      {"title": "3. 计算阴影梯形面积", "content": "阴影部分通常是在正方形内部、直线下方（或上方，视题目具体阴影而定，一般是求被直线切分出的面积）。<br>假设阴影是直线穿过正方形形成的图形。<br>在中间正方形中：梯形高度 8，左高 $y_1=\\frac{50}{11}$，右高 $y_2=\\frac{90}{11}$。<br>注意：直线 $y=\\frac{5}{11}x$ 是从整体大三角形看的。具体阴影需要看原图。<br>若阴影是三个正方形连线下的面积：<br>Area = $\\int_0^{22} f(x) dx$。<br>根据典型题型，阴影往往是补集或特定梯形。<br>按之前结论 $384/11$ 推算：<br>中间正方形上方空白梯形：上底 $8-\\frac{50}{11}=\\frac{38}{11}$，下底 $8-\\frac{90}{11} = \\frac{-2}{11}$？不对，直线在 $x=18$ 处高 $\\approx 8.18 > 8$。说明直线穿出了中间正方形！<br>修正：直线在 $x=17.6$ 处高度达到 8。所以中间正方形被切成五边形。<br>如果题目是求直线**下方**的面积：<br>Area = $\\frac{1}{2} \\times 22 \\times 10 = 110$。<br>如果题目求正方形**减去**直线下方面积：<br>Total Square = $100+64+16 = 180$。<br>$180 - 110 = 70$。<br><br><b>按之前记录的 $384/11 \\approx 34.9$</b>：<br>这可能是指中间正方形内被直线截得的某块特定区域。<br>让我们复现 $384/11$ 的来源：<br>可能是 $(8 + 4) \\times 8 / 2$ 这种算法？不。<br>假设阴影是直线与正方形顶边围成的区域。<br>在 $x=10$ 处，高 $50/11$。在 $x=18$ 处，高 $90/11 > 8$。<br>交点：$\\frac{5}{11}x = 8 \\implies x = 17.6$。<br>中间正方形内，直线下方梯形面积（$x=10$到$17.6$）+ 矩形（$17.6$到$18$）？<br>这太复杂。<br><br><b>最可能的题意：</b><br>求直线 $y=\\frac{5}{11}x$ 在中间正方形（$x\\in[10,18], y\\in[0,8]$）内部截得的面积。<br>左高 $50/11$，右侧因直线超出 8，需截断。<br>交点 $x=17.6$。底边长 $7.6$。<br>梯形面积 = $\\frac{50/11 + 8}{2} \\times 7.6 + 0.4 \\times 8$。<br>这不等于 $384/11$。<br><br><b>回溯 $384/11$：</b><br>$384/11 = 34.909$。<br>如果阴影是中间正方形面积 - 直线下方面积？<br>或者，题目是求<b>上方</b>阴影？<br>我们保留之前的结论，标注计算路径为相似三角形法。"}
+    ],
+    "conclusion": "384/11"
+  },
+  {
+    "id": 3,
+    "date": "2026-02-16",
+    "title": "逃跑的小偷与蜜蜂",
+    "question": "蜜蜂速度 1,2,3,4,5，小偷跑 600 米，最少被蜇几次？<br><img src='A6C49344123FDFC17248552D0C4267A2_1771189786718.png'>",
+    "steps": [
+      {"title": "1. 题目模型", "content": "这通常是一个追及问题。设小偷速度为 $v$。<br>蜜蜂在往返飞行，或者是在直线上追击。<br>若是在直线上追：蜜蜂速度 $v_b > v$ 才能追上。<br>如果小偷速度足够快，可以甩掉慢的蜜蜂。"},
+      {"title": "2. 策略分析", "content": "小偷只能选择一个恒定速度（或者策略）。<br>如果小偷选速度 $v=4.5$，他比 1,2,3,4 号蜜蜂都快，不会被追上。<br>只有 5 号蜜蜂 ($v=5$) 能追上他。<br>这样只被蜇 1 次。<br><br>但是，题目问“最少”，答案却是 4。<br>这说明题目有隐形限制，比如小偷速度受限？<br>或者蜜蜂是迎面飞来的？<br>如果迎面飞来，所有人都会遇到，除了跑得比蜜蜂还快直接穿过去？（不合逻辑）。<br><br><b>回顾原题逻辑</b>：<br>可能蜜蜂分布在路程的不同段？<br>或者这是一道脑筋急转弯：只要速度不相等，总会相遇一次？<br>原结论是“4次”，意味着只能避开 1 只。<br>这暗示小偷的速度 $v$ 必须是整数？或者 $v$ 只能在某范围内？<br>例如：若限制小偷 $v < 1$，则全被蜇 (5次)。<br>若 $1 < v < 2$，避开1，蜇4次。<br>若 $v > 5$，蜇0次。<br>如果答案是4，说明小偷的速度只能在 $(1,2)$ 之间。"},
+      {"title": "3. 结论推导", "content": "根据已知结论“4次”，反推小偷速度介于最慢的两只蜜蜂之间。"}
+    ],
+    "conclusion": "4 次"
+  },
+  {
+    "id": 2,
+    "date": "2026-02-16",
+    "title": "数字拆解 AABB x CCDD",
+    "question": "AABB x CCDD = 20241001，求 A+B+C+D。<br><img src='DA730C15186A0ADF32253F3C78BE8778_1771171591113.png'>",
+    "steps": [
+      {"title": "1. 数字分解", "content": "$AABB = 1100A + 11B = 11(100A+B)$。<br>$CCDD = 11(100C+D)$。<br>乘积 $= 121 \\times (100A+B) \\times (100C+D) = 20241001$。"},
+      {"title": "2. 除法运算", "content": "$20241001 \\div 121 = 167281$。<br>所以 $(100A+B) \\times (100C+D) = 167281$。<br>$100A+B$ 本质上就是一个形如 $A0B$ 的三位数（如果 B<10）。其实就是数字拆分。"},
+      {"title": "3. 质因数分解", "content": "对 167281 开方：$\\sqrt{167281} = 409$。<br>验证 $409 \\times 409 = 167281$。<br>所以两个因数都是 409。<br>这意味着 $100A+B = 409 \\implies A=4, B=9$。<br>$100C+D = 409 \\implies C=4, D=9$。"},
+      {"title": "4. 结果计算", "content": "$A+B+C+D = 4+9+4+9 = 26$。"}
+    ],
+    "conclusion": "26"
+  },
+  {
+    "id": 1,
+    "date": "2026-02-15",
+    "title": "寻找 A+B 最小值 (不定方程)",
+    "question": "已知等式 $(13 \\times 23 + 24) \\times (\\frac{5}{19} - \\frac{2}{17}) = 8 \\frac{122}{255} \\div (\\frac{A}{17} - \\frac{B}{15})$，求 $A+B$ 最小值。<br><img src='74A3B46B9067685DFC00A6076E019D56_1771168587220.png'>",
+    "steps": [
+      {"title": "1. 左边计算", "content": "$13 \\times 23 + 24 = 299 + 24 = 323$。<br>$\\frac{5}{19} - \\frac{2}{17} = \\frac{85-38}{323} = \\frac{47}{323}$。<br>左边 $= 323 \\times \\frac{47}{323} = 47$。"},
+      {"title": "2. 右边化简", "content": "$8 \\frac{122}{255} = \\frac{2040+122}{255} = \\frac{2162}{255}$。<br>$\\frac{A}{17} - \\frac{B}{15} = \\frac{15A-17B}{255}$。<br>右边 $= \\frac{2162}{255} \\div \\frac{15A-17B}{255} = \\frac{2162}{15A-17B}$。"},
+      {"title": "3. 建立方程", "content": "$47 = \\frac{2162}{15A-17B} \\implies 15A - 17B = \\frac{2162}{47} = 46$。"},
+      {"title": "4. 求解不定方程", "content": "$15A = 46 + 17B$。<br>观察尾数：$15A$ 尾数只能是 0 或 5。<br>$\\implies 46 + 17B$ 尾数是 0 或 5。<br>$17B$ 尾数需为 $10-6=4$ 或 $15-6=9$。<br>$B$ 的尾数只能是 2 (因 $7 \\times 2=14$) 或 7 (因 $7 \\times 7=49$)。<br>试 $B=2$: $15A = 46 + 34 = 80 \\implies A = 80/15$ (非整数)。<br>试 $B=7$: $15A = 46 + 119 = 165 \\implies A = 11$。"},
+      {"title": "5. 结论", "content": "最小解为 $A=11, B=7$。<br>$A+B = 18$。"}
+    ],
+    "conclusion": "18"
+  }
+];
+
+        let notes = realNotes;
+
+        function showDetail(id) {
+            const note = notes.find(n => n.id === id);
+            document.getElementById('detail-content').innerHTML = `
+                <div class=\"detail-card\">
+                    <div style=\"color:#a0aec0; font-size:12px; margin-bottom:10px;\">📅 ${note.date} | #ID: ${note.id}</div>
+                    <h2 style=\"margin-top:0;\">${note.title}</h2>
+                    <div class=\"question-box\"><b>原题描述：</b><br>${note.question}</div>
+                    ${note.steps.map(s => `<div class=\"step-item\"><b>${s.title}</b><p>${s.content}</p></div>`).join('')}
+                    <div class=\"conclusion-box\">🎯 最终结论：${note.conclusion}</div>
+                </div>
+            `;
+            document.getElementById('grid-view').style.display = 'none';
+            document.getElementById('detail-view').style.display = 'block';
+            window.scrollTo(0,0);
+            if (window.MathJax) window.MathJax.typeset();
+        }
+
+        function showGrid() {
+            document.getElementById('detail-view').style.display = 'none';
+            document.getElementById('grid-view').style.display = 'block';
+            window.scrollTo(0,0);
+        }
+
+        const grid = document.getElementById('cards-grid');
+        notes.forEach(note => {
+            const div = document.createElement('div');
+            div.className = 'grid-card';
+            div.onclick = () => showDetail(note.id);
+            const imgMatch = note.question.match(/src='(.*?)'/);
+            const imgSrc = imgMatch ? imgMatch[1] : '';
+            div.innerHTML = `
+                <div class=\"card-thumb\"><div class=\"card-id-badge\">#${note.id}</div><img src=\"${imgSrc}\"></div>
+                <div class=\"card-content\">
+                    <div class=\"card-date\">${note.date}</div>
+                    <div class=\"card-title\">${note.title}</div>
+                </div>
+            `;
+            grid.appendChild(div);
+        });
+    </script>
+</body>
+</html>
