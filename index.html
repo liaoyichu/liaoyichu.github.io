@@ -6,13 +6,21 @@
     <title>初初的基地</title>
     <style>
         body { font-family: -apple-system, sans-serif; background: #f4f7f6; margin: 0; padding: 20px; color: #2c3e50; }
-        .container { max-width: 600px; margin: 0 auto; text-align: center; }
-        .header { padding: 40px 0; background: linear-gradient(135deg, #2c3e50, #4ca1af); color: white; border-radius: 15px; margin-bottom: 20px; }
-        .nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .nav-item { background: white; padding: 25px; border-radius: 12px; text-decoration: none; color: inherit; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s; }
-        .nav-item:active { transform: scale(0.95); }
-        .icon { font-size: 40px; margin-bottom: 10px; display: block; }
-        .label { font-weight: bold; font-size: 18px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .header { padding: 40px 0; background: linear-gradient(135deg, #2c3e50, #4ca1af); color: white; border-radius: 15px; margin-bottom: 20px; text-align: center; }
+        .section { background: white; border-radius: 12px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .section-title { font-size: 20px; font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .section-title .icon { font-size: 28px; }
+        .game-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .game-item { background: #f8f9fa; padding: 15px; border-radius: 10px; text-decoration: none; color: inherit; text-align: center; transition: transform 0.2s; }
+        .game-item:active { transform: scale(0.95); }
+        .game-item .icon { font-size: 32px; display: block; margin-bottom: 8px; }
+        .game-item .label { font-weight: bold; font-size: 14px; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; text-decoration: none; color: inherit; border-top: 1px solid #eee; }
+        .nav-item:first-of-type { border-top: none; }
+        .nav-item .icon { font-size: 24px; }
+        .nav-item .label { font-weight: bold; font-size: 16px; }
+        .nav-item.disabled { opacity: 0.5; }
     </style>
 </head>
 <body>
@@ -21,24 +29,38 @@
             <h1>🚀 初初的基地</h1>
             <p>学习、游戏、探索，都在这里！</p>
         </div>
-        <div class="nav-grid">
-            <a href="/games/mario/" class="nav-item">
+        
+        <div class="section">
+            <div class="section-title">
                 <span class="icon">🎮</span>
-                <span class="label">像素闯关</span>
-            </a>
-            <a href="https://liaoyichu.github.io/weiweigame/" class="nav-item">
-                <span class="icon">🧱</span>
-                <span class="label">围围游戏</span>
-            </a>
+                <span>游戏竞技场</span>
+            </div>
+            <div class="game-list">
+                <a href="/games/mario/" class="game-item">
+                    <span class="icon">🏃</span>
+                    <span class="label">像素闯关</span>
+                </a>
+                <a href="https://liaoyichu.github.io/weiweigame/" class="game-item">
+                    <span class="icon">✈️</span>
+                    <span class="label">大飞机</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">📚</span>
+                <span>学习天地</span>
+            </div>
             <a href="/study/math/" class="nav-item">
                 <span class="icon">📐</span>
                 <span class="label">数学实验室</span>
             </a>
-            <a href="#" class="nav-item" style="opacity: 0.5;">
+            <a href="#" class="nav-item disabled">
                 <span class="icon">🏮</span>
                 <span class="label">语文（建设中）</span>
             </a>
-            <a href="#" class="nav-item" style="opacity: 0.5;">
+            <a href="#" class="nav-item disabled">
                 <span class="icon">🔤</span>
                 <span class="label">英语（建设中）</span>
             </a>
