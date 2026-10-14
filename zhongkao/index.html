@@ -73,14 +73,14 @@ h2.lt em{font-style:normal;font-size:12px;color:var(--sub);margin-left:10px;lett
 
 /* ---------- 附录 ---------- */
 details{background:#fff;border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
-details summary{cursor:pointer;padding:13px 16px;font-size:15.5px;font-weight:600;list-style:none}
+details summary{cursor:pointer;padding:13px 16px;font-size:16.5px;font-weight:600;list-style:none}
 details summary::-webkit-details-marker{display:none}
 details summary::before{content:"▸ ";color:var(--blue)}
 details[open] summary::before{content:"▾ "}
 details .body{padding:0 16px 16px;border-top:1px solid var(--line)}
-details .body p{margin:12px 0;font-size:13.5px;color:var(--sub)}
-.pairs{display:flex;flex-wrap:wrap;gap:6px}
-.pairs span{background:var(--soft);border-radius:8px;padding:4px 9px;font-size:13.5px;
+details .body p{margin:12px 0;font-size:14.5px;color:var(--sub)}
+.pairs{display:flex;flex-wrap:wrap;gap:7px}
+.pairs span{background:var(--soft);border-radius:8px;padding:5px 10px;font-size:16px;
   font-family:Georgia,"Times New Roman",serif}
 .pairs span.st{background:#fdeee4;color:#8a3b0c}
 
@@ -115,7 +115,13 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);
   .top i{font-size:8pt;border:1px solid #bbb;background:none;color:#000}
   .top .m{font-size:9.5pt}
   .n{font-size:8.5pt}
+  /* 附录刻意放大：默认 13.5px 折合约 10pt，非加粗衬线印出来偏小 */
   details{break-inside:avoid}
+  details summary{font-size:12.5pt;padding:8pt 10pt}
+  details .body{padding:0 10pt 10pt}
+  details .body p{font-size:10pt;margin:7pt 0}
+  .pairs{gap:5pt}
+  .pairs span{font-size:12pt;padding:3.5pt 7pt;border-radius:5pt}
   details .body{display:block!important}
 }
 </style>
