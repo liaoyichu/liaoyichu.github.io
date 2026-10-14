@@ -89,8 +89,10 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);
 
 @media (max-width:420px){
   h1{font-size:20px}
+  .top{gap:6px}
   .top b{font-size:16px}
-  .top .m{font-size:14px;width:100%}
+  .top .m{font-size:14px}
+  .n{font-size:13px}
 }
 
 /* ---------- 打印：A4 双栏 ---------- */
@@ -190,6 +192,16 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);
 </div>
 <script>
 (function(){
+  // 打印/导出 PDF 时自动展开附录
+  function openAll(){
+    Array.prototype.forEach.call(document.querySelectorAll('details'),
+      function(d){ d.open = true; });
+  }
+  window.addEventListener('beforeprint', openAll);
+  if (window.matchMedia) {
+    try { window.matchMedia('print').addEventListener('change', function(e){ if(e.matches) openAll(); }); } catch(err){}
+  }
+
   var q = document.getElementById('q');
   var secs = Array.prototype.slice.call(document.querySelectorAll('section.lt'));
   var apx  = document.getElementById('apx');
